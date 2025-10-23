@@ -150,10 +150,79 @@ cast call YOUR_CONTRACT_ADDRESS "messageCount()" --rpc-url https://testnet-rpc.m
 
 ---
 
+## 11. Advanced Testing
+
+```bash
+forge test --gas-report
+```
+
+```bash
+forge coverage
+```
+
+```bash
+forge snapshot
+```
+
+```bash
+forge test --match-contract MessageBoardTest
+```
+
+---
+
+## 12. Code Formatting & Inspection
+
+```bash
+forge fmt
+```
+
+```bash
+forge inspect MessageBoard abi
+```
+
+```bash
+forge selectors list
+```
+
+---
+
+## 13. Decode & Encode Data
+
+Encode calldata:
+```bash
+cast calldata "updateMessage(string)" "Hello Monad"
+```
+
+Decode hex to UTF-8:
+```bash
+cast --to-utf8 0x...
+```
+
+Encode constructor args:
+```bash
+cast abi-encode "constructor(string)" "Hello Monad!"
+```
+
+---
+
 ## Useful Links
 
+### Monad
 - Monad Faucet: https://faucet.monad.xyz/
 - Monad Explorer: https://testnet.monadexplorer.com/
 - Monad Docs: https://docs.monad.xyz/
+- Monad Deploy Guide: https://docs.monad.xyz/guides/deploy-smart-contract/foundry
+- Monad Verify Guide: https://docs.monad.xyz/guides/verify-smart-contract/foundry
+
+### Foundry
 - Foundry Book: https://book.getfoundry.sh/
+- Testing Guide: https://book.getfoundry.sh/forge/writing-tests
+- Cheatcodes Reference: https://book.getfoundry.sh/cheatcodes/
+- Cast Reference: https://book.getfoundry.sh/reference/cast/
+- Forge Reference: https://book.getfoundry.sh/reference/forge/
+
+### Learning Resources
+- Solidity by Example: https://solidity-by-example.org/
+- OpenZeppelin: https://docs.openzeppelin.com/contracts/
+- Foundry Full Course: https://www.youtube.com/watch?v=umepbfKp5rI
 

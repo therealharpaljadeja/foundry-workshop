@@ -10,6 +10,12 @@ Welcome to the Foundry Workshop! This guide will take you from installation to d
 - [Deployment Script](#deployment-script)
 - [Deploying to Monad Testnet](#deploying-to-monad-testnet)
 - [Verifying Contract](#verifying-contract)
+- [Interacting with Deployed Contracts](#interacting-with-deployed-contracts)
+- [Useful Commands Cheatsheet](#useful-commands-cheatsheet)
+- [Additional Resources](#additional-resources)
+- [Best Practices & Tips](#best-practices--tips)
+- [Troubleshooting](#troubleshooting)
+- [Next Steps After the Workshop](#next-steps-after-the-workshop)
 
 ---
 
@@ -121,6 +127,10 @@ contract MessageBoard {
 forge build
 ```
 
+**📚 Learn More:**
+- [Solidity Documentation](https://docs.soliditylang.org/)
+- [Foundry Project Structure](https://book.getfoundry.sh/projects/project-layout)
+
 ---
 
 ## Writing Tests
@@ -209,6 +219,21 @@ Get gas report:
 forge test --gas-report
 ```
 
+### Understanding the Test
+
+**Key Testing Features Used:**
+- `vm.prank(address)` - Sets `msg.sender` for the next call
+- `assertEq()` - Checks if two values are equal
+- `vm.expectRevert()` - Expects the next call to revert
+- `vm.expectEmit()` - Expects an event to be emitted
+
+**📚 Learn More:**
+- [Foundry Testing Guide](https://book.getfoundry.sh/forge/tests)
+- [Forge Standard Library (forge-std)](https://book.getfoundry.sh/reference/forge-std/)
+- [Cheatcodes Reference](https://book.getfoundry.sh/cheatcodes/)
+- [Assertions Reference](https://book.getfoundry.sh/reference/forge-std/std-assertions)
+- [Test Coverage](https://book.getfoundry.sh/forge/coverage)
+
 ---
 
 ## Deployment Script
@@ -246,6 +271,10 @@ contract DeployMessageBoard is Script {
 forge script script/DeployMessageBoard.s.sol
 ```
 
+**📚 Learn More:**
+- [Solidity Scripting Guide](https://book.getfoundry.sh/tutorials/solidity-scripting)
+- [Deploying Contracts](https://book.getfoundry.sh/forge/deploying)
+- [forge script Reference](https://book.getfoundry.sh/reference/forge/forge-script)
 ---
 
 ## Deploying to Monad Testnet
@@ -274,6 +303,10 @@ Get your keystore address:
 ```bash
 cast wallet address --account monad-deployer
 ```
+
+**📚 Learn More:**
+- [Wallet Management with Cast](https://book.getfoundry.sh/reference/cast/cast-wallet)
+- [Using Keystores](https://book.getfoundry.sh/reference/cast/cast-wallet-import)
 
 ### 3. Deploy Using Keystore
 
@@ -399,16 +432,161 @@ cast wallet address --account NAME  # Get address
 cast balance ADDRESS --rpc-url https://testnet-rpc.monad.xyz
 ```
 
+### Advanced Commands
+```bash
+forge snapshot                 # Create gas snapshot
+forge snapshot --diff          # Compare with previous snapshot
+forge fmt                      # Format Solidity code
+forge inspect CONTRACT abi     # Get contract ABI
+forge selectors list           # List all function selectors
+cast calldata "func(uint256)" 123  # Encode calldata
+cast 4byte 0x12345678          # Decode function selector
+cast receipt TX_HASH --rpc-url URL  # Get transaction receipt
+```
+
+**📚 Learn More:**
+- [Gas Optimization Guide](https://book.getfoundry.sh/forge/gas-snapshots)
+- [Formatting Solidity](https://book.getfoundry.sh/reference/forge/forge-fmt)
+- [Contract Inspection](https://book.getfoundry.sh/reference/forge/forge-inspect)
+
+---
+
+## Interacting with Deployed Contracts
+
+After deploying your contract, you can interact with it using `cast`:
+
+### Read Functions (view/pure)
+
+Get the current message:
+```bash
+cast call YOUR_CONTRACT_ADDRESS "getMessage()" --rpc-url https://testnet-rpc.monad.xyz
+```
+
+Get message count:
+```bash
+cast call YOUR_CONTRACT_ADDRESS "messageCount()" --rpc-url https://testnet-rpc.monad.xyz
+```
+
+Get the author:
+```bash
+cast call YOUR_CONTRACT_ADDRESS "author()" --rpc-url https://testnet-rpc.monad.xyz
+```
+
+### Write Functions (requires gas)
+
+Update the message:
+```bash
+cast send YOUR_CONTRACT_ADDRESS "updateMessage(string)" "Hello from Cast!" --account monad-deployer --rpc-url https://testnet-rpc.monad.xyz
+```
+
+### Decode Output
+
+If you get hex output, decode it:
+```bash
+cast --to-utf8 0x...
+```
+
+**📚 Learn More:**
+- [Cast Reference](https://book.getfoundry.sh/reference/cast/)
+- [cast call Documentation](https://book.getfoundry.sh/reference/cast/cast-call)
+- [cast send Documentation](https://book.getfoundry.sh/reference/cast/cast-send)
+- [ABI Encoding/Decoding](https://book.getfoundry.sh/reference/cast/cast-abi-encode)
+
 ---
 
 ## Additional Resources
 
-- [Foundry Book](https://book.getfoundry.sh/)
+### Foundry Documentation
+- [Foundry Book](https://book.getfoundry.sh/) - Complete Foundry documentation
+- [Forge Commands Reference](https://book.getfoundry.sh/reference/forge/) - All forge commands
+- [Cast Commands Reference](https://book.getfoundry.sh/reference/cast/) - All cast commands
+- [Anvil Local Testnet](https://book.getfoundry.sh/anvil/) - Local Ethereum node
+- [Chisel REPL](https://book.getfoundry.sh/chisel/) - Solidity REPL
+- [Foundry GitHub](https://github.com/foundry-rs/foundry) - Source code and issues
+
+### Testing & Development
+- [Writing Tests](https://book.getfoundry.sh/forge/writing-tests)
+- [Fuzz Testing](https://book.getfoundry.sh/forge/fuzz-testing)
+- [Invariant Testing](https://book.getfoundry.sh/forge/invariant-testing)
+- [Debugging Tests](https://book.getfoundry.sh/forge/debugger)
+- [Gas Snapshots](https://book.getfoundry.sh/forge/gas-snapshots)
+- [Forking Mainnet](https://book.getfoundry.sh/forge/fork-testing)
+
+### Advanced Topics
+- [Scripts and Automation](https://book.getfoundry.sh/tutorials/solidity-scripting)
+- [Signature Verification](https://book.getfoundry.sh/reference/cast/cast-sig)
+- [Working with ABIs](https://book.getfoundry.sh/reference/cast/cast-abi-decode)
+- [Foundry Configuration](https://book.getfoundry.sh/reference/config/)
+
+### Monad Testnet
 - [Monad Documentation](https://docs.monad.xyz/)
 - [Monad Deploy Guide](https://docs.monad.xyz/guides/deploy-smart-contract/foundry)
 - [Monad Verify Guide](https://docs.monad.xyz/guides/verify-smart-contract/foundry)
 - [Monad Faucet](https://faucet.monad.xyz/)
 - [Monad Explorer](https://testnet.monadexplorer.com/)
+- [Monad Developer Discord](https://discord.gg/monad)
+
+### Solidity Resources
+- [Solidity Documentation](https://docs.soliditylang.org/)
+- [Solidity by Example](https://solidity-by-example.org/)
+- [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts/)
+- [Consensys Smart Contract Best Practices](https://consensys.github.io/smart-contract-best-practices/)
+
+### Video Tutorials & Community
+- [Foundry Full Course (YouTube)](https://www.youtube.com/watch?v=umepbfKp5rI) - Patrick Collins
+- [Foundry Tutorials (Cyfrin)](https://www.cyfrin.io/blog)
+- [Smart Contract Programmer](https://www.youtube.com/@smartcontractprogrammer) - Solidity & Foundry videos
+- [Foundry Twitter](https://twitter.com/getfoundry) - Latest updates
+- [Foundry Telegram](https://t.me/foundry_rs) - Community chat
+
+### Example Projects
+- [Foundry Template](https://github.com/PaulRBerg/foundry-template) - Production-ready template
+- [Solmate](https://github.com/transmissions11/solmate) - Gas-optimized contracts
+- [Foundry Examples](https://github.com/crisgarner/awesome-foundry) - Curated list
+
+---
+
+## Best Practices & Tips
+
+### Development Workflow
+1. **Always test locally first**: Use `forge test` before deploying
+2. **Use gas reports**: Run `forge test --gas-report` to optimize gas usage
+3. **Version control**: Commit your code frequently
+4. **Use keystores**: Never expose private keys in commands or code
+5. **Write descriptive tests**: Name tests clearly (e.g., `test_RevertEmptyMessage`)
+
+### Testing Tips
+- Use `setUp()` function to initialize common state
+- Test edge cases and failure scenarios
+- Use fuzz testing for comprehensive coverage: `function testFuzz_updateMessage(string memory input) public`
+- Mock external calls with cheatcodes
+- Use `vm.expectRevert()` to test error conditions
+
+### Gas Optimization
+- View gas costs: `forge test --gas-report`
+- Create gas snapshots: `forge snapshot`
+- Compare optimizations: `forge snapshot --diff`
+- Use events for data that doesn't need on-chain storage
+- Pack storage variables efficiently
+
+### Security Considerations
+- Always validate inputs in your contracts
+- Use OpenZeppelin libraries for standard implementations
+- Test with different user addresses using `vm.prank()`
+- Consider reentrancy and other common vulnerabilities
+- Get audits for production contracts
+
+### Foundry Pro Tips
+- Use `forge fmt` to auto-format your code
+- Run `forge clean` if you encounter compilation issues
+- Use `cast calldata` to debug function calls
+- Leverage `console.log()` in tests (import from `forge-std/console.sol`)
+- Use `--watch` flag to continuously verify contracts
+
+**📚 Learn More:**
+- [Smart Contract Security Best Practices](https://consensys.github.io/smart-contract-best-practices/)
+- [Gas Optimization Techniques](https://book.getfoundry.sh/forge/gas-snapshots)
+- [Foundry Best Practices](https://book.getfoundry.sh/tutorials/best-practices)
 
 ---
 
@@ -420,13 +598,43 @@ cast balance ADDRESS --rpc-url https://testnet-rpc.monad.xyz
 2. **Compilation errors**: Run `forge clean && forge build`
 3. **RPC errors**: Check your internet connection and RPC URL
 4. **Keystore password**: Make sure you remember the password you set
+5. **Test failures**: Run with `-vvvv` flag for detailed traces: `forge test -vvvv`
+6. **Verification fails**: Ensure you're using the correct contract name and address
+7. **Module not found**: Run `forge install` to install dependencies
+8. **Permission denied**: Check file permissions or run with appropriate rights
+
+### Debug Commands
+
+```bash
+# Very verbose test output
+forge test -vvvv
+
+# Test specific function with traces
+forge test --match-test test_UpdateMessage -vvvv
+
+# Check Foundry version
+forge --version
+
+# Update Foundry
+foundryup
+
+# Clean and rebuild
+forge clean && forge build
+
+# Validate config
+forge config
+```
 
 ### Get Help
 
 - Monad Developer Discord: [Join Here](https://discord.gg/monad)
 - Foundry Support: [GitHub Discussions](https://github.com/foundry-rs/foundry/discussions)
+- Foundry GitHub Issues: [Report Bugs](https://github.com/foundry-rs/foundry/issues)
+- Ethereum Stack Exchange: [Ask Questions](https://ethereum.stackexchange.com/)
+
+Happy Building on Monad! 🚀
 
 ---
 
-Happy Building on Monad! 🚀
+**Workshop created with ❤️ for the Foundry & Monad communities**
 
